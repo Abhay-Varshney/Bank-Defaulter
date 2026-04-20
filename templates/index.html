@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Credit Defaulter Prediction</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 450px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+
+        .radio-group {
+            margin: 10px 0 15px;
+        }
+
+        .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+}
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        .result-box {
+    margin-bottom: 20px;
+    padding: 18px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+    from {opacity: 0; transform: translateY(-20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+        .success {
+            background: #e6fffa;
+            color: #065f46;
+            border: 2px solid #38b2ac;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #7f1d1d;
+            border: 2px solid #f87171;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    {% if prediction_text %}
+        <div class="result-box 
+            {% if 'Rejected' in prediction_text %}error{% else %}success{% endif %}">
+            {{ prediction_text }}
+        </div>
+    {% endif %}
+    <h2>Credit Defaulter Prediction</h2>
+
+    <form action="/predict" method="POST" onsubmit="return validateForm()">
+
+        <input type="number" name="limit_bal" placeholder="Credit Limit">
+
+        <select name="sex">
+            <option value="">Select Gender</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+        </select>
+
+        <input type="number" name="age" placeholder="Age">
+
+        <input type="number" name="pay_0" placeholder="Repayment Status (Last Month)">
+        <input type="number" name="pay_2" placeholder="Repayment Status (2 Months Ago)">
+        <input type="number" name="pay_3" placeholder="Repayment Status (3 Months Ago)">
+
+        <input type="number" name="bill_amt1" placeholder="Latest Bill Amount">
+        <input type="number" name="pay_amt1" placeholder="Last Payment Amount">
+
+        <select name="marriage">
+            <option value="">Marital Status</option>
+            <option value="1">Married</option>
+            <option value="2">Single</option>
+            <option value="3">Others</option>
+        </select>
+
+        <label>Education:</label>
+        <div class="radio-group">
+    <label><input type="radio" name="education" value="university"> University</label>
+    <label><input type="radio" name="education" value="high_school"> High School</label>
+    <label><input type="radio" name="education" value="others"> Others</label>
+</div>
+
+        <button type="submit">Predict</button>
+
+    </form>
+
+    
+</div>
+
+<!-- VALIDATION SCRIPT -->
+<script>
+function validateForm() {
+    const inputs = document.querySelectorAll("input[type='number'], select");
+
+    for (let i = 0; i < inputs.length; i++) {
+        if (inputs[i].value === "") {
+            alert("⚠️ Please fill all fields!");
+            return false;
+        }
+    }
+
+    // Check radio buttons
+    const education = document.querySelector('input[name="education"]:checked');
+    if (!education) {
+        alert("⚠️ Please select education!");
+        return false;
+    }
+
+    return true;
+}
+</script>
+
+</body>
+</html>
