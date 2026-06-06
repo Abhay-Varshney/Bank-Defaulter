@@ -51,6 +51,6 @@ if st.button("Predict"):
     prediction = model.predict(input_data)
 
     if prediction[0] == 1:
-        st.error("❌ You are a Defaulter - Loan Rejected")
+        st.error("❌ You are a Defaulter - Loan ejected")
     else:
         st.success("✅ You are Not a Defaulter - Loan Approved")
